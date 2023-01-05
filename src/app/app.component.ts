@@ -6,9 +6,9 @@ import { EmployeeService } from './services/employee.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit, AfterViewInit{
+export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('fileInput') fileInput: any;
   @ViewChild('addEmployeeButton') addEmployeeButton: any;
   title = 'EmployeeCRUD';
@@ -17,6 +17,13 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   employees: Employee[];
   employeesToDisplay: Employee[];
+  educationOptions = [
+    'High School',
+    'Diploma',
+    'University Degree',
+    "Master's Degree",
+    'Doctorate Degree',
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -53,7 +60,24 @@ export class AppComponent implements OnInit, AfterViewInit{
     //this.buttontemp.nativeElement.click();
   }
 
-
+  addEmployee() {
+    let employee: Employee = {
+      firstname: this.FirstName.value,
+      lastname: this.LastName.value,
+      email: this.Email.value,
+      phoneNo: this.PhoneNo.value,
+      birthdate: this.BirthDay.value,
+      gender: this.Gender.value,
+      education: this.educationOptions[parseInt(this.Education.value)],
+      jobExperience: this.JobExperience.value,
+      salary: this.Salary.value,
+      profile: this.fileInput.nativeElement.files[0]?.name,
+    };
+    this.employeeService.postEmployee(employee).subscribe((res) => {
+      this.employees.unshift(res);
+      this.clearForm();
+    });
+  }
 
   removeEmployee(event: any) {
     this.employees.forEach((val, index) => {
@@ -84,6 +108,9 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.Gender.setValue(emp.gender);
 
     let educationIndex = 0;
+    this.educationOptions.forEach((val, index) => {
+      if (val === emp.education) educationIndex = index;
+    });
     this.Education.setValue(educationIndex);
 
     this.JobExperience.setValue(emp.jobExperience);
