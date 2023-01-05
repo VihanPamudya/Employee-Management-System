@@ -37,5 +37,4 @@ export class EmployeeComponent implements OnInit {
   editEmployeeClicked(){
     this.onEditEmployee.emit(this.employee.id);
   }
-
 }
