@@ -1,18 +1,5 @@
 {
-  "posts": [
-    {
-      "firstname": "vfvfv",
-      "lastname": "",
-      "email": "",
-      "phoneNo": "",
-      "birthdate": "",
-      "gender": "",
-      "education": "High School",
-      "jobExperience": "",
-      "salary": "",
-      "id": 1
-    }
-  ],
+  "posts": [],
   "comments": [],
   "profile": {
     "name": "typicode"

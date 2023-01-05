@@ -5,8 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HeaderComponent } from './header/header.component';
-import { EmployeeComponent } from './employee/employee.component';
+import { HeaderComponent } from './component/header/header.component';
+import { EmployeeComponent } from './component/employee/employee.component';
 
 @NgModule({
   declarations: [
