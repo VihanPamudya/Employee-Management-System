@@ -41,11 +41,11 @@ export class AppComponent implements OnInit, AfterViewInit {
       email: this.fb.control(''),
       phoneNo: this.fb.control(''),
       birthday: this.fb.control(''),
-      gender: this.fb.control(''),
-      education: this.fb.control('default'),
-      company: this.fb.control(''),
-      jobExperience: this.fb.control(''),
-      salary: this.fb.control(''),
+      // gender: this.fb.control(''),
+      // education: this.fb.control('default'),
+      // company: this.fb.control(''),
+      // jobExperience: this.fb.control(''),
+      // salary: this.fb.control(''),
     });
 
     this.employeeService.getEmployees().subscribe((res) => {
@@ -62,16 +62,17 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   addEmployee() {
     let employee: Employee = {
-      firstname: this.FirstName.value,
-      lastname: this.LastName.value,
-      email: this.Email.value,
-      phoneNo: this.PhoneNo.value,
-      birthdate: this.BirthDay.value,
-      gender: this.Gender.value,
-      education: this.educationOptions[parseInt(this.Education.value)],
-      jobExperience: this.JobExperience.value,
-      salary: this.Salary.value,
-      profile: this.fileInput.nativeElement.files[0]?.name,
+      firstName: this.FirstName.value,
+      lastName: this.LastName.value,
+      properties: { email: this.Email.value, phoneNumber: this.PhoneNo.value, dateOfBirth: this.BirthDay.value, }
+
+
+
+      // gender: this.Gender.value,
+      // education: this.educationOptions[parseInt(this.Education.value)],
+      // jobExperience: this.JobExperience.value,
+      // salary: this.Salary.value,
+      // profile: this.fileInput.nativeElement.files[0]?.name,
     };
     this.employeeService.postEmployee(employee).subscribe((res) => {
       this.employees.unshift(res);
@@ -100,22 +101,22 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   setForm(emp: Employee) {
-    this.FirstName.setValue(emp.firstname);
-    this.LastName.setValue(emp.lastname);
-    this.Email.setValue(emp.email);
-    this.PhoneNo.setValue(emp.phoneNo);
-    this.BirthDay.setValue(emp.birthdate);
-    this.Gender.setValue(emp.gender);
+    this.FirstName.setValue(emp.firstName);
+    this.LastName.setValue(emp.lastName);
+    this.Email.setValue(emp.properties.email);
+    this.PhoneNo.setValue(emp.properties.phoneNumber);
+    this.BirthDay.setValue(emp.properties.dateOfBirth);
+    // this.Gender.setValue(emp.gender);
 
-    let educationIndex = 0;
-    this.educationOptions.forEach((val, index) => {
-      if (val === emp.education) educationIndex = index;
-    });
-    this.Education.setValue(educationIndex);
+    // let educationIndex = 0;
+    // this.educationOptions.forEach((val, index) => {
+    //   if (val === emp.education) educationIndex = index;
+    // });
+    // this.Education.setValue(educationIndex);
 
-    this.JobExperience.setValue(emp.jobExperience);
-    this.Salary.setValue(emp.salary);
-    this.fileInput.nativeElement.value = '';
+    // this.JobExperience.setValue(emp.jobExperience);
+    // this.Salary.setValue(emp.salary);
+    // this.fileInput.nativeElement.value = '';
   }
 
   searchEmployees(event: any) {
@@ -125,7 +126,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.employeesToDisplay = this.employees;
     } else {
       filteredEmployees = this.employees.filter((val, index) => {
-        let targetKey = val.firstname.toLowerCase() + '' + val.lastname.toLowerCase();
+        let targetKey = val.firstName.toLowerCase() + '' + val.lastName.toLowerCase();
         let searchKey = event.toLowerCase();
         return targetKey.includes(searchKey);
       });
@@ -139,12 +140,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.Email.setValue('');
     this.PhoneNo.setValue('');
     this.BirthDay.setValue('');
-    this.Gender.setValue('');
-    this.Education.setValue('');
-    this.Company.setValue('');
-    this.JobExperience.setValue('');
-    this.Salary.setValue('');
-    this.fileInput.nativeElement.value = '';
+    // this.Gender.setValue('');
+    // this.Education.setValue('');
+    // this.JobExperience.setValue('');
+    // this.Salary.setValue('');
+    // this.fileInput.nativeElement.value = '';
   }
 
   public get FirstName(): FormControl {
@@ -162,19 +162,16 @@ export class AppComponent implements OnInit, AfterViewInit {
   public get BirthDay(): FormControl {
     return this.employeeForm.get('birthday') as FormControl;
   }
-  public get Gender(): FormControl {
-    return this.employeeForm.get('gender') as FormControl;
-  }
-  public get Education(): FormControl {
-    return this.employeeForm.get('education') as FormControl;
-  }
-  public get Company(): FormControl {
-    return this.employeeForm.get('company') as FormControl;
-  }
-  public get JobExperience(): FormControl {
-    return this.employeeForm.get('jobExperience') as FormControl;
-  }
-  public get Salary(): FormControl {
-    return this.employeeForm.get('salary') as FormControl;
-  }
+  // public get Gender(): FormControl {
+  //   return this.employeeForm.get('gender') as FormControl;
+  // }
+  // public get Education(): FormControl {
+  //   return this.employeeForm.get('education') as FormControl;
+  // }
+  // public get JobExperience(): FormControl {
+  //   return this.employeeForm.get('jobExperience') as FormControl;
+  // }
+  // public get Salary(): FormControl {
+  //   return this.employeeForm.get('salary') as FormControl;
+  // }
 }

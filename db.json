@@ -1,5 +1,16 @@
 {
-  "posts": [],
+  "posts": [
+    {
+      "firstName": "cdcd",
+      "lastName": "dcd",
+      "properties": {
+        "email": "dcd@dcd",
+        "phoneNumber": "222222222",
+        "dateOfBirth": "2023-01-11"
+      },
+      "id": 1
+    }
+  ],
   "comments": [],
   "profile": {
     "name": "typicode"

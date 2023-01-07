@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Employee } from '../../models/employee.model';
+import { Employee } from 'src/app/models/employee.model';
 
 @Component({
   selector: 'app-employee',
@@ -13,16 +13,18 @@ export class EmployeeComponent implements OnInit {
 
   constructor() {
     this.employee = {
-      firstname: '',
-      lastname: '',
-      email: '',
-      phoneNo: '',
-      birthdate: '',
-      gender: '',
-      education: '',
-      jobExperience: 0,
-      salary: 0,
-      profile: '',
+      firstName: '',
+      lastName: '',
+      properties: {
+        email: '',
+        phoneNumber: '',
+        dateOfBirth: ''
+      }
+      // gender: '',
+      // education: '',
+      // jobExperience: 0,
+      // salary: 0,
+      // profile: '',
     };
   }
 
@@ -34,7 +36,7 @@ export class EmployeeComponent implements OnInit {
     this.onRemoveEmployee.emit(this.employee.id);
   }
 
-  editEmployeeClicked(){
+  editEmployeeClicked() {
     this.onEditEmployee.emit(this.employee.id);
   }
 }

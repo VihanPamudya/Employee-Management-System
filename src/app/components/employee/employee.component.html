@@ -2,16 +2,16 @@
 
     <div class="row g-0">
 
-        <div class="col-md-2 d-flex justify-content-center align-items-center">
+        <!-- <div class="col-md-2 d-flex justify-content-center align-items-center">
             <img src="../../assets/Images/{{employee.profile}}" alt="Profile Image" class="profile">
-        </div>
+        </div> -->
 
         <div class="col ps-2">
 
             <div class="row g-0">
 
                 <div class="col-md-10 text-center">
-                    <span class="name">{{employee.firstname | titlecase}} {{employee.lastname | titlecase}}</span>
+                    <span class="name">{{employee.firstName | titlecase}} {{employee.lastName| titlecase}}</span>
                 </div>
 
                 <div class="col-md-2 d-flex justify-content-center align-items-center" style="margin-left: -10px;">
@@ -38,22 +38,22 @@
                         <tbody>
                             <tr>
                                 <td>Birthdate</td>
-                                <td>{{employee.birthdate}}</td>
+                                <td>{{employee.properties.dateOfBirth}}</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td>Gender</td>
                                 <td>{{employee.gender == 'm' ? "Male" : "Female"}}</td>
                             </tr>
                             <tr>
                                 <td>Education</td>
                                 <td>{{employee.education | titlecase}}</td>
-                            </tr>
+                            </tr> -->
                         </tbody>
                     </table>
 
                 </div>
 
-                <div class="col">
+                <!-- <div class="col">
 
                     <table class="table table-hover mx-auto">
                         <thead class="text-center fs-5 fst-italic text-secondary">
@@ -68,12 +68,12 @@
                             </tr>
                             <tr>
                                 <td>Salary</td>
-                                <td>{{employee.salary}}</td>
+                                <td>{{employee.salary}} LPA</td>
                             </tr>
                         </tbody>
                     </table>
 
-                </div>
+                </div> -->
 
             </div>
 
