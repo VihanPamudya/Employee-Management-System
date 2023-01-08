@@ -15,7 +15,7 @@ import { HttpClient } from '@angular/common/http';
     }
   
     postEmployee(employee: Employee) {
-      return this.http.post<Employee>(this.baseUrl, employee);
+      return this.http.post<Employee>('/rest/servicepoint/customers/', employee);
     }
   
     deleteEmployee(id: string) {

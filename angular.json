@@ -16,9 +16,7 @@
             "outputPath": "dist/employee-management-app",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -63,7 +61,8 @@
               "browserTarget": "Employee-Management-App:build:production"
             },
             "development": {
-              "browserTarget": "Employee-Management-App:build:development"
+              "browserTarget": "Employee-Management-App:build:development",
+              "proxyConfig": "proxy.config.json"
             }
           },
           "defaultConfiguration": "development"
