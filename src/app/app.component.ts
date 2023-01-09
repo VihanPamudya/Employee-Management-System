@@ -14,6 +14,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   title = 'EmployeeCRUD';
 
   employeeForm: FormGroup;
+  public targetListOptions: Employee[] = [];
+public filteredTargetListOptions: Employee[] = [];
 
   employees: Employee[];
   employeesToDisplay: Employee[];
@@ -91,12 +93,27 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   editEmployee(event: any) {
+    let employee: Employee = {
+      firstName: this.FirstName.value,
+      lastName: this.LastName.value,
+      properties: { email: this.Email.value, phoneNumber: this.PhoneNo.value, dateOfBirth: this.BirthDay.value, }
+
+
+
+      // gender: this.Gender.value,
+      // education: this.educationOptions[parseInt(this.Education.value)],
+      // jobExperience: this.JobExperience.value,
+      // salary: this.Salary.value,
+      // profile: this.fileInput.nativeElement.files[0]?.name,
+    };
     this.employees.forEach((val, ind) => {
       if (val.id === event) {
-        this.setForm(val);
+        this.employeeService.editEmployer(event,employee).subscribe((res) => {
+            this.setForm(val);
+        })
+       
       }
     });
-    this.removeEmployee(event);
     this.addEmployeeButton.nativeElement.click();
   }
 
