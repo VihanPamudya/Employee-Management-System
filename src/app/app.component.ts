@@ -18,7 +18,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   employees: Employee[];
   employeesToDisplay: Employee[];
 
-  newReg: boolean = true;
+  newReg: boolean = false;
+  modal: any;
 
   constructor(
     private fb: FormBuilder,
@@ -45,7 +46,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.employeesToDisplay = this.employees;
     });
 
-    this.newReg=false
+    this.newReg = true
+    console.log(this.newReg)
   }
 
   searchEmployees(event: any) {
@@ -76,16 +78,17 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.employeeService.postEmployee(employee).subscribe((res) => {
       this.employees.unshift(res);
       this.clearForm();
+      this.newReg = false
+      console.log(this.newReg)
     });
   }
-
 
   Submit() {
     if (this.newReg) {
       this.addEmployee();
     }
     else {
-      console.log('update')
+    this.editEmployee(this.employees)
     }
   }
 
@@ -94,6 +97,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       if (val.id === parseInt(event)) {
         this.employeeService.deleteEmployee(event).subscribe((res) => {
           this.employees.splice(index, 1);
+          alert('Employee Deleted!')
         });
       }
     });
@@ -108,6 +112,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.employees.forEach((val, ind) => {
       if (val.id === event) {
         this.employeeService.editEmployer(event, employee).subscribe((res) => {
+          console.log(res)
           this.setForm(val);
         })
       }
