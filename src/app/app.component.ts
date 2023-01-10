@@ -14,18 +14,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   title = 'EmployeeCRUD';
 
   employeeForm: FormGroup;
-  public targetListOptions: Employee[] = [];
-public filteredTargetListOptions: Employee[] = [];
 
   employees: Employee[];
   employeesToDisplay: Employee[];
-  educationOptions = [
-    'High School',
-    'Diploma',
-    'University Degree',
-    "Master's Degree",
-    'Doctorate Degree',
-  ];
+
+  newReg: boolean = true;
 
   constructor(
     private fb: FormBuilder,
@@ -43,11 +36,6 @@ public filteredTargetListOptions: Employee[] = [];
       email: this.fb.control(''),
       phoneNo: this.fb.control(''),
       birthday: this.fb.control(''),
-      // gender: this.fb.control(''),
-      // education: this.fb.control('default'),
-      // company: this.fb.control(''),
-      // jobExperience: this.fb.control(''),
-      // salary: this.fb.control(''),
     });
 
     this.employeeService.getEmployees().subscribe((res) => {
@@ -56,84 +44,8 @@ public filteredTargetListOptions: Employee[] = [];
       }
       this.employeesToDisplay = this.employees;
     });
-  }
 
-  ngAfterViewInit(): void {
-    //this.buttontemp.nativeElement.click();
-  }
-
-  addEmployee() {
-    let employee: Employee = {
-      firstName: this.FirstName.value,
-      lastName: this.LastName.value,
-      properties: { email: this.Email.value, phoneNumber: this.PhoneNo.value, dateOfBirth: this.BirthDay.value, }
-
-
-
-      // gender: this.Gender.value,
-      // education: this.educationOptions[parseInt(this.Education.value)],
-      // jobExperience: this.JobExperience.value,
-      // salary: this.Salary.value,
-      // profile: this.fileInput.nativeElement.files[0]?.name,
-    };
-    this.employeeService.postEmployee(employee).subscribe((res) => {
-      this.employees.unshift(res);
-      this.clearForm();
-    });
-  }
-
-  removeEmployee(event: any) {
-    this.employees.forEach((val, index) => {
-      if (val.id === parseInt(event)) {
-        this.employeeService.deleteEmployee(event).subscribe((res) => {
-          this.employees.splice(index, 1);
-        });
-      }
-    });
-  }
-
-  editEmployee(event: any) {
-    let employee: Employee = {
-      firstName: this.FirstName.value,
-      lastName: this.LastName.value,
-      properties: { email: this.Email.value, phoneNumber: this.PhoneNo.value, dateOfBirth: this.BirthDay.value, }
-
-
-
-      // gender: this.Gender.value,
-      // education: this.educationOptions[parseInt(this.Education.value)],
-      // jobExperience: this.JobExperience.value,
-      // salary: this.Salary.value,
-      // profile: this.fileInput.nativeElement.files[0]?.name,
-    };
-    this.employees.forEach((val, ind) => {
-      if (val.id === event) {
-        this.employeeService.editEmployer(event,employee).subscribe((res) => {
-            this.setForm(val);
-        })
-       
-      }
-    });
-    this.addEmployeeButton.nativeElement.click();
-  }
-
-  setForm(emp: Employee) {
-    this.FirstName.setValue(emp.firstName);
-    this.LastName.setValue(emp.lastName);
-    this.Email.setValue(emp.properties.email);
-    this.PhoneNo.setValue(emp.properties.phoneNumber);
-    this.BirthDay.setValue(emp.properties.dateOfBirth);
-    // this.Gender.setValue(emp.gender);
-
-    // let educationIndex = 0;
-    // this.educationOptions.forEach((val, index) => {
-    //   if (val === emp.education) educationIndex = index;
-    // });
-    // this.Education.setValue(educationIndex);
-
-    // this.JobExperience.setValue(emp.jobExperience);
-    // this.Salary.setValue(emp.salary);
-    // this.fileInput.nativeElement.value = '';
+    this.newReg=false
   }
 
   searchEmployees(event: any) {
@@ -151,17 +63,72 @@ public filteredTargetListOptions: Employee[] = [];
     }
   }
 
+  ngAfterViewInit(): void {
+    //this.buttontemp.nativeElement.click();
+  }
+
+  addEmployee() {
+    let employee: Employee = {
+      firstName: this.FirstName.value,
+      lastName: this.LastName.value,
+      properties: { email: this.Email.value, phoneNumber: this.PhoneNo.value, dateOfBirth: this.BirthDay.value, }
+    };
+    this.employeeService.postEmployee(employee).subscribe((res) => {
+      this.employees.unshift(res);
+      this.clearForm();
+    });
+  }
+
+
+  Submit() {
+    if (this.newReg) {
+      this.addEmployee();
+    }
+    else {
+      console.log('update')
+    }
+  }
+
+  removeEmployee(event: any) {
+    this.employees.forEach((val, index) => {
+      if (val.id === parseInt(event)) {
+        this.employeeService.deleteEmployee(event).subscribe((res) => {
+          this.employees.splice(index, 1);
+        });
+      }
+    });
+  }
+
+  editEmployee(event: any) {
+    let employee: Employee = {
+      firstName: this.FirstName.value,
+      lastName: this.LastName.value,
+      properties: { email: this.Email.value, phoneNumber: this.PhoneNo.value, dateOfBirth: this.BirthDay.value, }
+    };
+    this.employees.forEach((val, ind) => {
+      if (val.id === event) {
+        this.employeeService.editEmployer(event, employee).subscribe((res) => {
+          this.setForm(val);
+        })
+      }
+    });
+    this.addEmployeeButton.nativeElement.click();
+  }
+
+  setForm(emp: Employee) {
+    this.FirstName.setValue(emp.firstName);
+    this.LastName.setValue(emp.lastName);
+    this.Email.setValue(emp.properties.email);
+    this.PhoneNo.setValue(emp.properties.phoneNumber);
+    this.BirthDay.setValue(emp.properties.dateOfBirth);
+  }
+
   clearForm() {
     this.FirstName.setValue('');
     this.LastName.setValue('');
     this.Email.setValue('');
     this.PhoneNo.setValue('');
     this.BirthDay.setValue('');
-    // this.Gender.setValue('');
-    // this.Education.setValue('');
-    // this.JobExperience.setValue('');
-    // this.Salary.setValue('');
-    // this.fileInput.nativeElement.value = '';
   }
 
   public get FirstName(): FormControl {
@@ -179,16 +146,4 @@ public filteredTargetListOptions: Employee[] = [];
   public get BirthDay(): FormControl {
     return this.employeeForm.get('birthday') as FormControl;
   }
-  // public get Gender(): FormControl {
-  //   return this.employeeForm.get('gender') as FormControl;
-  // }
-  // public get Education(): FormControl {
-  //   return this.employeeForm.get('education') as FormControl;
-  // }
-  // public get JobExperience(): FormControl {
-  //   return this.employeeForm.get('jobExperience') as FormControl;
-  // }
-  // public get Salary(): FormControl {
-  //   return this.employeeForm.get('salary') as FormControl;
-  // }
 }

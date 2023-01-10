@@ -11,6 +11,7 @@ export class EmployeeComponent implements OnInit {
   @Output() onRemoveEmployee = new EventEmitter<number>();
   @Output() onEditEmployee = new EventEmitter<number>();
 
+
   constructor() {
     this.employee = {
       firstName: '',
@@ -20,11 +21,6 @@ export class EmployeeComponent implements OnInit {
         phoneNumber: '',
         dateOfBirth: ''
       }
-      // gender: '',
-      // education: '',
-      // jobExperience: 0,
-      // salary: 0,
-      // profile: '',
     };
   }
 
