@@ -11,10 +11,4 @@ export class Employee {
       phoneNumber: '',
       dateOfBirth: ''
     }
-
-  // gender: string = '';
-  // education: string = '';
-  // jobExperience: number = 0;
-  // salary: number = 0;
-  // profile: string = '';
 }

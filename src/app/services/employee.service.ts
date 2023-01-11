@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Employee } from "../models/employee.model";
 import { HttpClient } from '@angular/common/http';
+import { map } from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -11,22 +12,34 @@ export class EmployeeService {
   constructor(private http: HttpClient) { }
 
   getEmployees() {
-    return this.http.get<Employee[]>('/rest/servicepoint/customers/');
+    return this.http.get<any>(`/rest/servicepoint/customers;firstName=vihan`)
+    .pipe(map((res:any)=>{
+      return res;
+    }))
   }
 
-  searchEmployer() {
-    return this.http.get<Employee[]>('/rest/servicepoint/customers/search/');
+  searchEmployee(data: any) {
+    return this.http.get<any[]>(`/rest/servicepoint/customers;firstName=${data}`);
   }
 
-  postEmployee(employee: Employee) {
-    return this.http.post<Employee>('/rest/servicepoint/customers/', employee);
+  postEmployee(data: any) {
+    return this.http.post<any>('/rest/servicepoint/customers/', data)
+      .pipe(map((res:any)=>{
+      return res;
+    }))
   }
 
-  editEmployer(id: string, employee: Employee) {
-    return this.http.put<Employee>('/rest/servicepoint/customers' + '/' + id, employee);
+  editEmployer(id: any, data: any) {
+    return this.http.put<any>('/rest/servicepoint/customers' + '/' + id, data)
+    .pipe(map((res:any)=>{
+      return res;
+    }))
   }
 
-  deleteEmployee(id: string) {
-    return this.http.delete('/rest/servicepoint/customers' + '/' + id);
+  deleteEmployee(id: number) {
+    return this.http.delete<any>('/rest/servicepoint/customers' + '/' + id)
+    .pipe(map((res:any)=>{
+      return res;
+    }))
   }
 }

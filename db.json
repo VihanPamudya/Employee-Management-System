@@ -2,17 +2,16 @@
   "posts": [
     {
       "id": 1,
-      "title": "json-server",
-      "author": "typicode"
+      "firstName": "vihani",
+      "lastName": "pamudya",
+      "properties": {
+        "email": "vihan@gmail.com",
+        "phoneNumber": "22222222",
+        "dateOfBirth": "2023-01-10"
+      }
     }
   ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ],
+  "comments": [],
   "profile": {
     "name": "typicode"
   }

@@ -1,91 +1,202 @@
-<div class="container-fluid g-0 p-2">
+<div class="container-fluid g-0">
+  <!-- HEADER -->
+  <app-header></app-header>
 
-    <div class="row g-0">
+  <!-- MAIN CONTENT -->
+  <main class="black-borde">
+    <!-- TOOBAR TO ADD AND SEARCH EMPLOYEES -->
+    <div class="toolbar">
+      <div class="add-employee">
+        <button
+          type="button"
+          class="btn btn-outline-success btn-lg"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          (click)="clickAddEmployee()"
+        >
+          Add Employee
+        </button>
+      </div>
 
-        <!-- <div class="col-md-2 d-flex justify-content-center align-items-center">
-            <img src="../../assets/Images/{{employee.profile}}" alt="Profile Image" class="profile">
-        </div> -->
-
-        <div class="col ps-2">
-
-            <div class="row g-0">
-
-                <div class="col-md-10 text-center">
-                    <span class="name">{{employee.firstName | titlecase}} {{employee.lastName| titlecase}}</span>
-                </div>
-
-                <div class="col-md-2 d-flex justify-content-center align-items-center" style="margin-left: -10px;">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-success"
-                            (click)="editEmployeeClicked()">Edit</button>
-                        <button type="button" class="btn btn-outline-danger"
-                            (click)="deleteEmployeeClicked()">Delete</button>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row g-0 mt-3">
-
-                <div class="col-md">
-
-                    <table class="table table-hover mx-auto">
-                        <thead class="text-center fs-5 fst-italic text-secondary">
-                            <tr>
-                                <td colspan="2">Personal Details</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Email :</td>
-                                <td>{{employee.properties.email}}</td>
-                            </tr>
-                            <tr>
-                                <td>Date of Birth :</td>
-                                <td>{{employee.properties.dateOfBirth}}</td>
-                            </tr>
-                            <tr>
-                                <td>Phone Number :</td>
-                                <td>{{employee.properties.phoneNumber}}</td>
-                            </tr>
-                            <!-- <tr>
-                                <td>Gender</td>
-                                <td>{{employee.gender == 'm' ? "Male" : "Female"}}</td>
-                            </tr>
-                            <tr>
-                                <td>Education</td>
-                                <td>{{employee.education | titlecase}}</td>
-                            </tr> -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- <div class="col">
-
-                    <table class="table table-hover mx-auto">
-                        <thead class="text-center fs-5 fst-italic text-secondary">
-                            <tr>
-                                <td colspan="2">Job Details</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Experience</td>
-                                <td>{{employee.jobExperience}} yrs</td>
-                            </tr>
-                            <tr>
-                                <td>Salary</td>
-                                <td>{{employee.salary}} LPA</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div> -->
-
-            </div>
-
-        </div>
-
+      <div class="search-employees">
+        <input
+          type="search"
+          class="form-control"
+          placeholder="Search Employees"
+          (input)="searchEmployees(searchInput.value)"
+          #searchInput
+        />
+      </div>
     </div>
 
+    <!-- AREA TO DISPLAY ALL THE EMPLOYEES -->
+    <div class="employees">
+      <div class="row mt-5" *ngIf="employeeData.length == 0">
+        <div class="col text-center">
+          <span class="text-secondary fs-2 fw-bold fst-italic"
+            >There are No Employees Added!</span
+          >
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">First name</th>
+              <th scope="col">Last name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Date of Birth</th>
+              <th scope="col">Phone Number</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let employee of employeeData; let ei = index">
+            <tr>
+              <td>{{ employee.firstName }}</td>
+              <td>{{ employee.lastName }}</td>
+              <td>{{ employee.properties.email }}</td>
+              <td>{{ employee.properties.dateOfBirth }}</td>
+              <td>{{ employee.properties.phoneNumber }}</td>
+              <td>
+                <button
+                  class="btn btn-info"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  (click)="editEmployee(employee)"
+                >
+                  Edit
+                </button>
+                <button
+                  class="btn btn-danger mx-3"
+                  (click)="deleteEmployee(employee)"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Enter Employee Information
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="employeeForm">
+          <!-- FIRST AND LAST NAME -->
+          <div class="row">
+            <div class="col">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="First Name"
+                formControlName="firstName"
+                required
+              />
+              <!-- <label class="text-danger"> First name is required! </label> -->
+            </div>
+            <div class="col">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Last Name"
+                formControlName="lastName"
+                required
+              />
+              <!-- <label class="text-danger"> Last name is required! </label> -->
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <input
+                type="email"
+                class="form-control"
+                placeholder="Email"
+                formControlName="email"
+                required
+                email
+              />
+              <!-- <label class="text-danger"> Email is required! </label>
+              <label class="text-danger"> Enter a valid email address! </label> -->
+            </div>
+            <div class="col">
+              <input
+                type="tel"
+                class="form-control"
+                placeholder="Phone Number"
+                formControlName="phoneNumber"
+              />
+            </div>
+          </div>
+
+          <!-- PERSONAL INFORMATION -->
+          <div class="row mt-4">
+            <div class="col form-heading">
+              <h6 class="text-secondary fst-italic">Personal Information</h6>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label for="datepicker" class="text-secondary"
+                >Date of Birth</label
+              >
+              <input
+                type="date"
+                class="form-control"
+                id="datepicker"
+                formControlName="dateOfBirth"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button
+          type="button"
+          *ngIf="showAdd"
+          class="btn btn-primary"
+          (click)="addEmployee()"
+          data-bs-dismiss="modal"
+          [disabled]="!employeeForm.valid"
+        >
+          Save & Add
+        </button>
+        <button
+          type="button"
+          *ngIf="showUpdate"
+          class="btn btn-primary"
+          (click)="updateEmployee()"
+          data-bs-dismiss="modal"
+          [disabled]="!employeeForm.valid"
+        >
+          Update
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
