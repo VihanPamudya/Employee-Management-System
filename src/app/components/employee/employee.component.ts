@@ -88,9 +88,10 @@ export class EmployeeComponent implements OnInit {
   }
 
   deleteEmployee(id: number) {
+    if(confirm('Are you sure to delete employee?'))
     this.employeeService.deleteEmployee(id).subscribe((res) => {
-      alert('Employee Deleted Successfully!');
       this.getAllEmployees();
+      alert('Employee Deleted Successfully!');
     });
   }
 }

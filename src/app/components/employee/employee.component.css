@@ -79,5 +79,8 @@ app-employee {
   transform: translateY(-50%);
 }
 
+.mat-mdc-table .mdc-data-table__row:hover{
+  background-color: lightgray;
+}
 
   
