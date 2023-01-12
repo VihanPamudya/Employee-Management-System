@@ -12,7 +12,7 @@
           class="btn btn-outline-success btn-lg"
           data-bs-toggle="modal"
           data-bs-target="#exampleModal"
-          (click)="clickAddEmployee()"
+          (click)="openDialog()"
         >
           Add Employee
         </button>
@@ -31,7 +31,7 @@
 
     <!-- AREA TO DISPLAY ALL THE EMPLOYEES -->
     <div class="employees">
-      <div class="row mt-5" *ngIf="employeeData.length == 0">
+      <div class="row" style="margin-top: 15%;" *ngIf="employeeData.length == 0">
         <div class="col text-center">
           <span class="text-secondary fs-2 fw-bold fst-italic"
             >There are No Employees Added!</span
@@ -39,50 +39,89 @@
         </div>
       </div>
 
-      <div class="row mt-4">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">First name</th>
-              <th scope="col">Last name</th>
-              <th scope="col">Email</th>
-              <th scope="col">Date of Birth</th>
-              <th scope="col">Phone Number</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let employee of employeeData; let ei = index">
-            <tr>
-              <td>{{ employee.firstName }}</td>
-              <td>{{ employee.lastName }}</td>
-              <td>{{ employee.properties.email }}</td>
-              <td>{{ employee.properties.dateOfBirth }}</td>
-              <td>{{ employee.properties.phoneNumber }}</td>
-              <td>
+      <div class="row mt-5" style="width: 95%; margin: 0 auto">
+        <div class="mat-elevation-z8" *ngIf="employeeData.length > 0">
+          <table mat-table [dataSource]="dataSource" matSort>
+            <!-- ID Column -->
+            <ng-container matColumnDef="firstName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                First Name
+              </th>
+              <td mat-cell *matCellDef="let row">{{ row.firstName | titlecase }}</td>
+            </ng-container>
+
+            <!-- Progress Column -->
+            <ng-container matColumnDef="lastName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Last Name
+              </th>
+              <td mat-cell *matCellDef="let row">{{ row.lastName | titlecase }}</td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+              <td mat-cell *matCellDef="let row">{{ row.properties.email }}</td>
+            </ng-container>
+
+            <!-- Fruit Column -->
+            <ng-container matColumnDef="dateOfBirth">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Date of Birth
+              </th>
+              <td mat-cell *matCellDef="let row">
+                {{ row.properties.dateOfBirth | date }}
+              </td>
+            </ng-container>
+
+            <!-- Fruit Column -->
+            <ng-container matColumnDef="phoneNumber">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Phone Number
+              </th>
+              <td mat-cell *matCellDef="let row">
+                {{ row.properties.phoneNumber }}
+              </td>
+            </ng-container>
+
+            <!-- Fruit Column -->
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+              <td mat-cell *matCellDef="let row">
                 <button
-                  class="btn btn-info"
+                  mat-icon-button
+                  color="primary"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
-                  (click)="editEmployee(employee)"
+                  (click)="editDialog(row)"
                 >
-                  Edit
+                  <mat-icon>edit</mat-icon>
                 </button>
                 <button
-                  class="btn btn-danger mx-3"
-                  (click)="deleteEmployee(employee)"
+                  mat-icon-button
+                  color="warn"
+                  (click)="deleteEmployee(row.id)"
                 >
-                  Delete
+                  <mat-icon>delete</mat-icon>
                 </button>
               </td>
-            </tr>
-          </tbody>
-        </table>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <mat-paginator
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            aria-label="Select page of users"
+          ></mat-paginator>
+        </div>
       </div>
     </div>
   </main>
 </div>
 
-<div
+<!-- <div
   class="modal fade"
   id="exampleModal"
   data-bs-backdrop="static"
@@ -103,7 +142,7 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="employeeForm">
-          <!-- FIRST AND LAST NAME -->
+         
           <div class="row">
             <div class="col">
               <input
@@ -113,7 +152,7 @@
                 formControlName="firstName"
                 required
               />
-              <!-- <label class="text-danger"> First name is required! </label> -->
+             
             </div>
             <div class="col">
               <input
@@ -123,7 +162,7 @@
                 formControlName="lastName"
                 required
               />
-              <!-- <label class="text-danger"> Last name is required! </label> -->
+            
             </div>
           </div>
 
@@ -137,8 +176,7 @@
                 required
                 email
               />
-              <!-- <label class="text-danger"> Email is required! </label>
-              <label class="text-danger"> Enter a valid email address! </label> -->
+             
             </div>
             <div class="col">
               <input
@@ -150,7 +188,7 @@
             </div>
           </div>
 
-          <!-- PERSONAL INFORMATION -->
+          
           <div class="row mt-4">
             <div class="col form-heading">
               <h6 class="text-secondary fst-italic">Personal Information</h6>
@@ -199,4 +237,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

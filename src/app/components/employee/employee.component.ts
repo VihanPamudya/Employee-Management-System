@@ -1,7 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Employee } from 'src/app/models/employee.model';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-employee',
@@ -9,28 +16,28 @@ import { EmployeeService } from 'src/app/services/employee.service';
   styleUrls: ['./employee.component.css'],
 })
 export class EmployeeComponent implements OnInit {
-  employeeForm: FormGroup;
-  employees: Employee = new Employee();
   employeeData: any = 0;
   showAdd!: boolean;
   showUpdate!: boolean;
+  displayedColumns: string[] = [
+    'firstName',
+    'lastName',
+    'email',
+    'dateOfBirth',
+    'phoneNumber',
+    'action',
+  ];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private fb: FormBuilder,
-    private employeeService: EmployeeService
-  ) {
-    this.employeeForm = fb.group({});
-  }
+    private employeeService: EmployeeService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    this.employeeForm = this.fb.group({
-      firstName: [''],
-      lastName: [''],
-      email: [''],
-      phoneNumber: [''],
-      dateOfBirth: [''],
-    });
-
     this.getAllEmployees();
   }
 
@@ -44,70 +51,46 @@ export class EmployeeComponent implements OnInit {
     }
   }
 
-  addEmployee() {
-    this.employees.firstName = this.employeeForm.value.firstName;
-    this.employees.lastName = this.employeeForm.value.lastName;
-    this.employees.properties = {
-      email: this.employeeForm.value.email,
-      phoneNumber: this.employeeForm.value.phoneNumber,
-      dateOfBirth: this.employeeForm.value.dateOfBirth,
-    };
-
-    this.employeeService.postEmployee(this.employees).subscribe(
-      (res) => {
-        console.log(res);
-        alert('Employee Added Successfully!');
-        this.employeeForm.reset();
-        this.getAllEmployees();
-      },
-      (err) => {
-        alert('Something Went Wrong!');
-      }
-    );
-  }
-
   getAllEmployees() {
     this.employeeService.getEmployees().subscribe((res) => {
+      this.dataSource = new MatTableDataSource(res);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       this.employeeData = res;
     });
   }
 
-  deleteEmployee(row: any) {
-    this.employeeService.deleteEmployee(row.id).subscribe((res) => {
-      alert('Employee Deleted!');
-      this.getAllEmployees();
-    });
-  }
-
-  editEmployee(row: any) {
-    this.showAdd = false;
-    this.showUpdate = true;
-    this.employees.id = row.id;
-    this.employeeForm.controls['firstName'].setValue(row.firstName);
-    this.employeeForm.controls['lastName'].setValue(row.lastName);
-    this.employeeForm.controls['email'].setValue(row.properties.email);
-    this.employeeForm.controls['phoneNumber'].setValue(row.properties.phoneNumber);
-    this.employeeForm.controls['dateOfBirth'].setValue(row.properties.dateOfBirth);
-  }
-
-  updateEmployee() {
-    this.employees.firstName = this.employeeForm.value.firstName;
-    this.employees.lastName = this.employeeForm.value.lastName;
-    this.employees.properties.email = this.employeeForm.value.email;
-    this.employees.properties.dateOfBirth = this.employeeForm.value.dateOfBirth;
-    this.employees.properties.phoneNumber = this.employeeForm.value.phoneNumber;
-    this.employeeService
-      .editEmployer(this.employees.id, this.employees)
-      .subscribe((res) => {
-        alert('Updated Successfully!');
-        this.employeeForm.reset();
-        this.getAllEmployees();
+  openDialog() {
+    this.dialog
+      .open(DialogComponent, {
+        width: '30%',
+      })
+      .afterClosed()
+      .subscribe((val) => {
+        if (val === 'Save') {
+          this.getAllEmployees();
+        }
       });
   }
 
-  clickAddEmployee() {
-    this.employeeForm.reset();
-    this.showAdd = true;
-    this.showUpdate = false;
+  editDialog(row: any) {
+    this.dialog
+      .open(DialogComponent, {
+        width: '30%',
+        data: row,
+      })
+      .afterClosed()
+      .subscribe((val) => {
+        if (val === 'Update') {
+          this.getAllEmployees();
+        }
+      });
+  }
+
+  deleteEmployee(id: number) {
+    this.employeeService.deleteEmployee(id).subscribe((res) => {
+      alert('Employee Deleted Successfully!');
+      this.getAllEmployees();
+    });
   }
 }
