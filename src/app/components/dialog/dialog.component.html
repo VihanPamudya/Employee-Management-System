@@ -2,36 +2,88 @@
 <div mat-dialog-content>
   <form [formGroup]="employeeForm">
     <mat-form-field appearance="outline" style="margin-top: 4px">
-        <mat-label>First Name</mat-label>
-        <input formControlName="firstName" matInput placeholder="First Name" required />
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Last Name</mat-label>
-        <input formControlName="lastName" matInput placeholder="Last Name" required/>
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input formControlName="email" matInput placeholder="Email" required/>
-        <mat-icon matSuffix>email</mat-icon>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Date of Birth</mat-label>
-        <input formControlName="dateOfBirth" matInput [matDatepicker]="picker" />
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Phone number</mat-label>
-        <input formControlName="phoneNumber" type="tel" matInput placeholder="Phone number"/>
-        <mat-icon matSuffix>phone</mat-icon>
-      </mat-form-field>
+      <mat-label>First Name</mat-label>
+      <input
+        formControlName="firstName"
+        type="text"
+        id="firstName"
+        matInput
+        placeholder="First Name"
+        required
+      />
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      <mat-error *ngIf="myError('firstName', 'required')"
+        >First Name is required!</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Last Name</mat-label>
+      <input
+        formControlName="lastName"
+        id="lastName"
+        matInput
+        placeholder="Last Name"
+        required
+      />
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      <mat-error *ngIf="myError('lastName', 'required')"
+        >Last Name is required!</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input
+        formControlName="email"
+        id="email"
+        matInput
+        placeholder="Email"
+        required
+      />
+      <mat-icon matSuffix>email</mat-icon>
+      <mat-error *ngIf="myError('email', 'required')"
+        >Email is required!</mat-error
+      >
+      <mat-error *ngIf="myError('email', 'email')"
+        >Please provide a valid email address!</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Date of Birth</mat-label>
+      <input
+        formControlName="dateOfBirth"
+        matInput
+        [matDatepicker]="picker"
+      />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Phone number</mat-label>
+      <input
+        formControlName="phoneNumber"
+        id="phoneNumber"
+        type="tel"
+        matInput
+        placeholder="Phone number"
+      />
+      <mat-error *ngIf="myError('phoneNumber', 'pattern')"
+        >Please enter valid phone number!</mat-error
+      >
+      <mat-icon matSuffix>phone</mat-icon>
+    </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions [align]="'end'">
-    <button mat-raised-button color="warn" mat-dialog-close>Close</button>
-    <button style="margin-right: 8px;" mat-raised-button color="primary" (click)="addEmployee()">{{actionBtn}}</button>
+  <button mat-raised-button color="warn" mat-dialog-close>Close</button>
+  <button
+    style="margin-right: 8px"
+    mat-raised-button
+    color="primary"
+    (click)="addEmployee()"
+  >
+    {{ actionBtn }}
+  </button>
 </div>
-
-

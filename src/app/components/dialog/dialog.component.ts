@@ -23,10 +23,10 @@ export class DialogComponent implements OnInit {
   }
   ngOnInit(): void {
     this.employeeForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', Validators.required],
-      phoneNumber: [''],
+      firstName: ['', [Validators.required, Validators.maxLength(15)]],
+      lastName: ['', [Validators.required, Validators.maxLength(20)]],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['', Validators.pattern("[0-9 ]{10}")],
       dateOfBirth: [''],
     });
 
@@ -49,6 +49,10 @@ export class DialogComponent implements OnInit {
     }
   }
 
+  public myError = (controlName: string, errorName: string) => {
+    return this.employeeForm.controls[controlName].hasError(errorName);
+  }
+
   addEmployee() {
     if (!this.editData) {
       if (this.employeeForm.valid) {
@@ -62,10 +66,9 @@ export class DialogComponent implements OnInit {
 
         this.employeeService.postEmployee(this.employees).subscribe(
           (res) => {
-            console.log(res);
-            alert('Employee Added Successfully!');
-            this.employeeForm.reset();
             this.dialogRef.close('Save');
+            this.employeeForm.reset();
+            alert('Employee Added Successfully!');
           },
           (err) => {
             alert('Something Went Wrong!');
@@ -87,9 +90,9 @@ export class DialogComponent implements OnInit {
     this.employeeService
       .editEmployer(this.employees.id, this.employees)
       .subscribe((res) => {
-        alert('Updated Successfully!');
-        this.employeeForm.reset();
         this.dialogRef.close('Update');
+        this.employeeForm.reset();
+        alert('Employee Updated Successfully!');
       });
   }
 }
