@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -35,7 +31,7 @@ export class EmployeeComponent implements OnInit {
   constructor(
     private employeeService: EmployeeService,
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getAllEmployees();
@@ -88,10 +84,10 @@ export class EmployeeComponent implements OnInit {
   }
 
   deleteEmployee(id: number) {
-    if(confirm('Are you sure to delete employee?'))
-    this.employeeService.deleteEmployee(id).subscribe((res) => {
-      this.getAllEmployees();
-      alert('Employee Deleted Successfully!');
-    });
+    if (confirm('Are you sure to delete employee?'))
+      this.employeeService.deleteEmployee(id).subscribe((res) => {
+        this.getAllEmployees();
+        alert('Employee Deleted Successfully!');
+      });
   }
 }

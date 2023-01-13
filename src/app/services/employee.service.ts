@@ -19,7 +19,7 @@ export class EmployeeService {
   }
 
   searchEmployee(data: any) {
-    return this.http.get<any[]>(`/rest/servicepoint/customers;firstName=${data}`);
+    return this.http.get<any[]>(`/rest/servicepoint/customers;firstName=${data};lastName=${data};`);
   }
 
   postEmployee(data: any) {
