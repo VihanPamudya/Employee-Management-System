@@ -42,7 +42,10 @@ export class EmployeeComponent implements OnInit {
       this.getAllEmployees();
     } else {
       this.employeeService.searchEmployee(event).subscribe((res) => {
-        this.employeeData = res;
+        this.dataSource = new MatTableDataSource(res);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.employeeData = res;
       });
     }
   }
